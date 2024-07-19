@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: daraja-b2c
+  datasource:
+    url: jdbc:mariadb://${MARIADB_URL:localhost:3306}/darajab2c
+    username: root
+    password: ${MARIADB_PASSWORD:root}
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+server:
+  port: 8080
+  servlet:
+    context-path: /svc/daraja-b2c
+
+management:
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include: '*'

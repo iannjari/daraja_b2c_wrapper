@@ -29,12 +29,23 @@ dependencies {
     // spring data JPA
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.3.1")
 
+    // hibernate
+    implementation("org.hibernate.orm:hibernate-core:6.5.2.Final")
+
+
     // kafka
     implementation("org.springframework.kafka:spring-kafka:3.2.2")
 
     // tests
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+}
+
+configurations {
+    all {
+        exclude("org.springframework.boot", "spring-boot-starter-logging")
+        exclude("org.springframework.boot", "logback-classic")
+    }
 }
 
 tasks.test {
