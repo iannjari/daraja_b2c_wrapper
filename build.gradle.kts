@@ -36,6 +36,9 @@ dependencies {
     // kafka
     implementation("org.springframework.kafka:spring-kafka:3.2.2")
 
+    // lombok
+    compileOnly("org.projectlombok:lombok:1.18.34")
+
     // tests
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
