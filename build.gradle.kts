@@ -32,6 +32,8 @@ dependencies {
     // hibernate
     implementation("org.hibernate.orm:hibernate-core:6.5.2.Final")
 
+    // flyway -DB migrations
+    implementation("org.flywaydb:flyway-mysql:10.16.0")
 
     // kafka
     implementation("org.springframework.kafka:spring-kafka:3.2.2")

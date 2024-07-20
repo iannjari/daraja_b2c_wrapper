@@ -6,6 +6,7 @@ import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -22,20 +23,29 @@ public class B2CTransaction {
 
     @Id
     @GeneratedValue(generator = "uuid4")
-    @Column(columnDefinition = "UUID")
+    @Column(columnDefinition = "UUID", name = "id")
     private UUID id;
 
-    @Column(nullable = false)
-    private double amount;
+    @Column(nullable = false, precision = 20, scale = 2, name = "amount")
+    private BigDecimal amount;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "status")
+    @Enumerated(EnumType.STRING)
     private B2CTransactionStatus status;
 
-    @Column(nullable = false)
+    // 3rd party (M-PESA) transaction ref
+    @Column(name = "transaction_ref")
+    private String transactionReference;
+
+    // whether this transaction is in a non-retriable failed/successful state
+    @Column(name = "terminal")
+    private boolean terminal;
+
+    @Column(nullable = false, name = "created_at")
     @CreatedDate
     private Instant createdAt;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "last_modified")
     @LastModifiedDate
     private Instant lastModified;
 }
