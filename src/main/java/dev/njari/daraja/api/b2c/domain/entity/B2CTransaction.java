@@ -37,6 +37,9 @@ public class B2CTransaction {
     @Column(name = "transaction_ref")
     private String transactionReference;
 
+    @Column(name = "remarks")
+    private String remarks;
+
     // whether this transaction is in a non-retriable failed/successful state
     @Column(name = "terminal")
     private boolean terminal;
