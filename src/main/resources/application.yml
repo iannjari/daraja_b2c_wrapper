@@ -10,6 +10,13 @@ spring:
     hibernate:
       ddl-auto: validate
 
+  flyway:
+    sql-migration-prefix: V
+    repeatable-sql-migration-prefix: R
+    sql-migration-separator: __
+    sql-migration-suffixes: .sql
+    locations: 'classpath:config/flyway'
+
 server:
   port: 8080
   servlet:
