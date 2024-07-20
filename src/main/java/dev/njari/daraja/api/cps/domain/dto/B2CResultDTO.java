@@ -1,6 +1,6 @@
-package dev.njari.daraja.cps.domain.dto;
+package dev.njari.daraja.api.cps.domain.dto;
 
-import dev.njari.daraja.b2c.domain.enums.B2CTransactionStatus;
+import dev.njari.daraja.api.b2c.domain.enums.B2CTransactionStatus;
 import lombok.Data;
 
 import java.util.UUID;

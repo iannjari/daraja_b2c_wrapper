@@ -1,4 +1,4 @@
-package dev.njari.daraja.b2c.domain.enums;
+package dev.njari.daraja.api.b2c.domain.enums;
 
 /**
  * @author njari_mathenge

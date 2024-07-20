@@ -1,7 +1,7 @@
-package dev.njari.daraja.cps.kafka;
+package dev.njari.daraja.api.cps.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.njari.daraja.cps.domain.dto.GwRequest;
+import dev.njari.daraja.api.cps.domain.dto.GwRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.shaded.com.google.protobuf.DynamicMessage;

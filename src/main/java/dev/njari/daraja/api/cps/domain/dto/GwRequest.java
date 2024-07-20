@@ -1,4 +1,4 @@
-package dev.njari.daraja.cps.domain.dto;
+package dev.njari.daraja.api.cps.domain.dto;
 
 /**
  * @author njari_mathenge

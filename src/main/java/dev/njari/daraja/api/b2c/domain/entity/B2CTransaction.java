@@ -1,6 +1,6 @@
-package dev.njari.daraja.b2c.domain.entity;
+package dev.njari.daraja.api.b2c.domain.entity;
 
-import dev.njari.daraja.b2c.domain.enums.B2CTransactionStatus;
+import dev.njari.daraja.api.b2c.domain.enums.B2CTransactionStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
