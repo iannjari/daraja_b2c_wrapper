@@ -38,6 +38,7 @@ dependencies {
 
     // lombok
     compileOnly("org.projectlombok:lombok:1.18.34")
+    annotationProcessor("org.projectlombok:lombok")
 
     // tests
     testImplementation(platform("org.junit:junit-bom:5.9.1"))

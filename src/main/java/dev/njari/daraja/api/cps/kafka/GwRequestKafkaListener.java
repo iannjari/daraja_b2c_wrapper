@@ -1,6 +1,7 @@
-package dev.njari.daraja.cps.kafka;
+package dev.njari.daraja.api.cps.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.njari.daraja.api.cps.domain.dto.GwRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.shaded.com.google.protobuf.DynamicMessage;
@@ -28,10 +29,10 @@ public class GwRequestKafkaListener {
      */
     @KafkaListener(groupId = "${kafka.consumer_group}", topics = "${kafka.topic.gw_request}",
             containerFactory = "kafkaManualACKListenerByteArrayContainerFactory")
-    public void listenToApprovalRequest(ConsumerRecord<String, DynamicMessage> cr, Acknowledgment ack) {
+    public void listenToGwRequest(ConsumerRecord<String, DynamicMessage> cr, Acknowledgment ack) {
 
-//        Optional<> requestOptional = objectMapper.convertValue(cr.value(), ));
-//        optionalRequest.ifPresent(// do something);
+        Optional<GwRequest> requestOptional = Optional.ofNullable(objectMapper.convertValue(cr.value(), GwRequest.class));
+//TODO:        optionalRequest.ifPresent(// do something);
         ack.acknowledge();
     }
 }
