@@ -54,8 +54,8 @@ daraja:
     b2c:
       cert-path: classpath:/certificates/sandbox.cer
   process-payouts: ${MPESA_URL}/mpesa/b2c/v3/paymentrequest
-  queue-timeout-url: ${QUEUE_TIMEOUT_URL:https://erp.staging.kyosk.dev/svc/paymentsvc/queue_timeout}
-  result-url: ${RESULT_URL:https://erp.staging.kyosk.dev/svc/paymentsvc/result}
+  queue-timeout-url: ${QUEUE_TIMEOUT_URL:https://example.com/svc/daraja-b2c/queue_timeout}
+  result-url: ${RESULT_URL:https://example.com/svc/daraja-b2c/result}
   url: https://sandbox.safaricom.co.ke/mpesa/b2c/v3/paymentrequest
   result-codes:
     success: 0
