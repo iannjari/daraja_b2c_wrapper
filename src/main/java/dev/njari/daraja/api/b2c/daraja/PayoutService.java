@@ -1,6 +1,9 @@
-package dev.njari.daraja.api.b2c.http_client;
+package dev.njari.daraja.api.b2c.daraja;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.njari.daraja.api.b2c.daraja.dto.B2CRequest;
+import dev.njari.daraja.api.b2c.daraja.dto.B2CResponse;
+import dev.njari.daraja.api.b2c.daraja.dto.DarajaError;
 import dev.njari.daraja.exception.InternalServerException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,8 +51,8 @@ public class PayoutService {
     }
 
     private <T> Call makeB2cRequest(T requestObj, String requestURL) throws IOException {
-        String token = "Bearer " + DarajaHttpClient.getB2cSafAccessToken(darajaSettings.getB2CConfig().getKey(),
-                darajaSettings.getB2CConfig().getSecret());
+        String token = "Bearer " + DarajaHttpClient.getB2cSafAccessToken(darajaSettings.getKey(),
+                darajaSettings.getSecret(), darajaSettings.getAuthenticationUrl());
 
         String requestString = mapper.writeValueAsString(requestObj);
         log.info("Request string: {}", requestString);

@@ -53,3 +53,17 @@ daraja:
   api:
     b2c:
       cert-path: classpath:/certificates/sandbox.cer
+  process-payouts: ${MPESA_URL}/mpesa/b2c/v3/paymentrequest
+  queue-timeout-url: ${QUEUE_TIMEOUT_URL:https://erp.staging.kyosk.dev/svc/paymentsvc/queue_timeout}
+  result-url: ${RESULT_URL:https://erp.staging.kyosk.dev/svc/paymentsvc/result}
+  url: https://sandbox.safaricom.co.ke/mpesa/b2c/v3/paymentrequest
+  result-codes:
+    success: 0
+    user-cancelled: 1032
+  authentication-url: ${MPESA_URL}/oauth/v1/generate?grant_type=client_credentials
+  initiator-name: ${INITIATOR_NAME:testapi}
+  security-credential: ${SECURITY_CREDENTIALS:xxxx}
+  command-id: BusinessPayment
+  key: ${B2C_MPESA_CONSUMER_KEY:xxxx}
+  secret: ${B2C_MPESA_CONSUMER_SECRET:xxxxx}
+  shortcode: ${B2C_MPESA_SHORTCODE:174379}

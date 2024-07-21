@@ -1,4 +1,4 @@
-package dev.njari.daraja.api.b2c.http_client;
+package dev.njari.daraja.api.b2c.daraja.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

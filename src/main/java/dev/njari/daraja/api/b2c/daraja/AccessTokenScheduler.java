@@ -1,6 +1,5 @@
-package dev.njari.daraja.api.b2c.http_client;
+package dev.njari.daraja.api.b2c.daraja;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,8 +25,8 @@ public class AccessTokenScheduler {
     @Scheduled(fixedRate = (1000 * 60) * 60)
     public void fetchAccessToken() throws InterruptedException {
         try {
-            accessToken = DarajaHttpClient.getB2cSafAccessToken(darajaSettings.getB2CConfig().getKey(),
-                    darajaSettings.getB2CConfig().getSecret());
+            accessToken = DarajaHttpClient.getB2cSafAccessToken(darajaSettings.getKey(),
+                    darajaSettings.getSecret(), darajaSettings.getAuthenticationUrl());
         } catch (IOException e) {
             e.printStackTrace();
             log.info("Error when fetching access token: {}", e.getLocalizedMessage());

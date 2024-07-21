@@ -1,6 +1,8 @@
-package dev.njari.daraja.api.b2c.http_client;
+package dev.njari.daraja.api.b2c.daraja;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.njari.daraja.api.b2c.daraja.dto.DarajaError;
+import dev.njari.daraja.api.b2c.daraja.dto.Token;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Call;
@@ -139,17 +141,16 @@ public class DarajaHttpClient {
         }
     }
 
-    public static String getB2cSafAccessToken(String key, String secret)
+    public static String getB2cSafAccessToken(String key, String secret, String authUrl)
             throws IOException {
 
         var basic = "Basic ".concat(getBase64(key, secret));
 
         OkHttpClient client = new OkHttpClient();
-        String url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"; // ToDo: Change this to "mpesaSettings.getApi().getUrls().getAuthenticationUrl()" after going live
         Request request =
                 new Request.Builder()
                         .get()
-                        .url(url)
+                        .url(authUrl)
                         .addHeader("Authorization", basic)
                         .addHeader("Content-Type", "application/json")
                         .addHeader(
@@ -185,7 +186,7 @@ public class DarajaHttpClient {
                     mapper.readValue(response.body().string(), DarajaError.class);
             log.error(errorResponse.getErrorMessage());
 
-            return getB2cSafAccessToken(key, secret); //makes this call recursive in cases of failure
+            return getB2cSafAccessToken(key, secret, authUrl); //makes this call recursive in cases of failure
         }
     }
 }

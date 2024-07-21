@@ -3,10 +3,10 @@ package dev.njari.daraja.api.b2c.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.njari.daraja.api.b2c.domain.entity.B2CTransaction;
-import dev.njari.daraja.api.b2c.http_client.B2CRequest;
-import dev.njari.daraja.api.b2c.http_client.DarajaHttpClient;
-import dev.njari.daraja.api.b2c.http_client.DarajaSettings;
-import dev.njari.daraja.api.b2c.http_client.PayoutService;
+import dev.njari.daraja.api.b2c.daraja.dto.B2CRequest;
+import dev.njari.daraja.api.b2c.daraja.DarajaHttpClient;
+import dev.njari.daraja.api.b2c.daraja.DarajaSettings;
+import dev.njari.daraja.api.b2c.daraja.PayoutService;
 import dev.njari.daraja.api.b2c.repository.B2CTransactionRepository;
 import dev.njari.daraja.api.cps.domain.dto.B2CResultDTO;
 import dev.njari.daraja.api.cps.domain.dto.GwRequest;
@@ -145,22 +145,22 @@ public class B2CService {
 
     public B2CRequest createB2CRequest(GwRequest gwRequest, B2CTransaction tr) {
 
-        String b2cPassword = darajaSettings.getB2CConfig().getSecurityCredential();
+        String b2cPassword = darajaSettings.getSecurityCredential();
 
         B2CRequest request = new B2CRequest();
 
         request.setOriginatorConversationID(tr.getId().toString());
-        request.setInitiatorName(darajaSettings.getB2CConfig().getInitiatorName());
+        request.setInitiatorName(darajaSettings.getInitiatorName());
         request.setSecurityCredential(
                 DarajaHttpClient.generateSecurityCredentials(b2cPassword, certPath, resourceLoader));
-        request.setPartyA(darajaSettings.getB2CConfig().getShortcode());
+        request.setPartyA(darajaSettings.getShortcode());
         request.setPartyB(gwRequest.getMobileNumber().replace("+", ""));
         request.setAmount(String.valueOf(tr.getAmount()));
         request.setRemarks("");
         request.setOccassion("PAYOUT");
-        request.setCommandID(darajaSettings.getB2CConfig().getCommandId());
-        request.setQueueTimeOutURL(darajaSettings.getApi().getB2c().getQueueTimeoutUrl());
-        request.setResultURL(darajaSettings.getApi().getB2c().getResultUrl());
+        request.setCommandID(darajaSettings.getCommandId());
+        request.setQueueTimeOutURL(darajaSettings.getQueueTimeoutUrl());
+        request.setResultURL(darajaSettings.getResultUrl());
         return request;
     }
 }
