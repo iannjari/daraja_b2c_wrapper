@@ -30,7 +30,7 @@ public class PayoutService {
     public B2CResponse processPayout(B2CRequest b2CRequest){
 
         try {
-            Call call = makeB2cRequest(b2CRequest, "https://sandbox.safaricom.co.ke/mpesa/b2c/v3/paymentrequest"); // TODO: Make this `mpesaSettings.getApi().getB2c().getProcessPayouts()`
+            Call call = makeB2cRequest(b2CRequest, darajaSettings.getUrl());
             Response response = call.execute();
 
             if (response.isSuccessful()) {
