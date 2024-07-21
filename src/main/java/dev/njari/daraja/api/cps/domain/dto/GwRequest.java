@@ -7,6 +7,8 @@ package dev.njari.daraja.api.cps.domain.dto;
  */
 
 import lombok.Data;
+import org.gradle.internal.impldep.com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.UUID;
 
 /**
@@ -18,5 +20,6 @@ public class GwRequest {
 
     private UUID id;
     private double amount;
+    @JsonProperty("mobile_number")
     private String mobileNumber;
 }

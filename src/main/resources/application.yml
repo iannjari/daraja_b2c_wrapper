@@ -49,6 +49,10 @@ kafka:
     topic:
       b2c_result: b2c_result
 
+logging:
+  level:
+    dev.njari: INFO
+
 daraja:
   api:
     b2c:
