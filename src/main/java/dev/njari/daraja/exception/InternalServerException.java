@@ -9,4 +9,8 @@ public class InternalServerException extends RuntimeException{
     public InternalServerException(String s, Exception ex) {
         super(s, ex);
     }
+
+    public InternalServerException(String s) {
+        super(s);
+    }
 }

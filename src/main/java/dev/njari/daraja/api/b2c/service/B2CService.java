@@ -3,6 +3,10 @@ package dev.njari.daraja.api.b2c.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.njari.daraja.api.b2c.domain.entity.B2CTransaction;
+import dev.njari.daraja.api.b2c.http_client.B2CRequest;
+import dev.njari.daraja.api.b2c.http_client.DarajaHttpClient;
+import dev.njari.daraja.api.b2c.http_client.DarajaSettings;
+import dev.njari.daraja.api.b2c.http_client.PayoutService;
 import dev.njari.daraja.api.b2c.repository.B2CTransactionRepository;
 import dev.njari.daraja.api.cps.domain.dto.B2CResultDTO;
 import dev.njari.daraja.api.cps.domain.dto.GwRequest;
@@ -10,13 +14,16 @@ import dev.njari.daraja.api.cps.kafka.B2CResultPublisher;
 import dev.njari.daraja.exception.InternalServerException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static dev.njari.daraja.api.b2c.domain.enums.B2CTransactionStatus.FAILED;
+import static dev.njari.daraja.api.b2c.domain.enums.B2CTransactionStatus.*;
 
 /**
  * @author njari_mathenge
@@ -31,6 +38,14 @@ public class B2CService {
     private final B2CTransactionRepository b2CTransactionRepo;
     private final B2CResultPublisher b2CResultPublisher;
     private final ObjectMapper objectMapper;
+    private final DarajaSettings darajaSettings;
+    private final PayoutService payoutService;
+
+    @Qualifier("customResourceLoader")
+    private final ResourceLoader resourceLoader;
+
+    @Value("${daraja.api.b2c.cert-path}")
+    private String certPath;
 
     /**
      * processes a GwRequest by forwarding it to the payment gateway(M-PESA Daraja API)
@@ -49,10 +64,26 @@ public class B2CService {
             failedTransaction.setStatus(FAILED);
             failedTransaction.setTerminal(true);
             failedTransaction.setRemarks(failureReason);
-            saveAndPublish(failedTransaction, request);
+            failedTransaction = saveAndPublish(failedTransaction, request);
             return;
         }
 
+        // process requests passing validations
+        B2CTransaction transaction = new B2CTransaction();
+        transaction.setAmount(BigDecimal.valueOf(request.getAmount()));
+        transaction.setStatus(PENDING);
+        transaction.setTerminal(true);
+        transaction.setRemarks("Processing pending");
+
+        // save with a status of PENDING initially, publish
+        transaction = saveAndPublish(transaction, request);
+
+        // generate request to payment gateway
+        B2CRequest pgRequest = createB2CRequest(request, transaction);
+
+        payoutService.processPayout(pgRequest);
+        transaction.setStatus(PROCESSING);
+        saveAndPublish(transaction, request);
     }
 
     /**
@@ -89,9 +120,9 @@ public class B2CService {
      * @param request - GwRequest
      */
     @Transactional
-    private void saveAndPublish(B2CTransaction tr, GwRequest request) {
+    private B2CTransaction saveAndPublish(B2CTransaction tr, GwRequest request) {
 
-        b2CTransactionRepo.save(tr);
+        tr = b2CTransactionRepo.save(tr);
         B2CResultDTO result = new B2CResultDTO();
         result.setId(result.getId()); // id that came from requesting service
         result.setStatus(tr.getStatus());
@@ -104,7 +135,32 @@ public class B2CService {
             b2CResultPublisher.publishInvokeStkRequest(message);
 
         } catch (JsonProcessingException | InternalServerException e) {
-            // TODO: update of transaction as not published to avoid roll-back of JPA transaction
+            // update of transaction as not published to avoid roll-back of JPA transaction
+            tr.setLastPublishingFailed(true);
+            tr = b2CTransactionRepo.save(tr);
         }
+
+        return tr;
+    }
+
+    public B2CRequest createB2CRequest(GwRequest gwRequest, B2CTransaction tr) {
+
+        String b2cPassword = darajaSettings.getB2CConfig().getSecurityCredential();
+
+        B2CRequest request = new B2CRequest();
+
+        request.setOriginatorConversationID(tr.getId().toString());
+        request.setInitiatorName(darajaSettings.getB2CConfig().getInitiatorName());
+        request.setSecurityCredential(
+                DarajaHttpClient.generateSecurityCredentials(b2cPassword, certPath, resourceLoader));
+        request.setPartyA(darajaSettings.getB2CConfig().getShortcode());
+        request.setPartyB(gwRequest.getMobileNumber().replace("+", ""));
+        request.setAmount(String.valueOf(tr.getAmount()));
+        request.setRemarks("");
+        request.setOccassion("PAYOUT");
+        request.setCommandID(darajaSettings.getB2CConfig().getCommandId());
+        request.setQueueTimeOutURL(darajaSettings.getApi().getB2c().getQueueTimeoutUrl());
+        request.setResultURL(darajaSettings.getApi().getB2c().getResultUrl());
+        return request;
     }
 }

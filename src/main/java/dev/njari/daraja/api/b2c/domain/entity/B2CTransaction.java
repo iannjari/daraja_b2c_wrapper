@@ -44,6 +44,12 @@ public class B2CTransaction {
     @Column(name = "terminal")
     private boolean terminal;
 
+    @Column(name = "last_publish_failed")
+    private boolean lastPublishingFailed;
+
+    @Column(name = "request_id", nullable = false)
+    private UUID requestId;
+
     @Column(nullable = false, name = "created_at")
     @CreatedDate
     private Instant createdAt;

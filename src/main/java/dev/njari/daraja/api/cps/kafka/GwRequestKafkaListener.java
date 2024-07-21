@@ -8,6 +8,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.shaded.com.google.protobuf.DynamicMessage;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,9 +19,8 @@ import java.util.Optional;
  * github.com/iannjari
  */
 
-@KafkaListener
 @RequiredArgsConstructor
-@Service
+@Component
 public class GwRequestKafkaListener {
 
     private final ObjectMapper objectMapper;
@@ -31,8 +31,7 @@ public class GwRequestKafkaListener {
      * @param cr - ConsumerRecord
      * @param ack - Acknowledgment
      */
-    @KafkaListener(groupId = "${kafka.consumer_group}", topics = "${kafka.topic.gw_request}",
-            containerFactory = "kafkaManualACKListenerByteArrayContainerFactory")
+    @KafkaListener(groupId = "${kafka.consumer_group}", topics = "${kafka.consumer.topic.gw_request}")
     public void listenToGwRequest(ConsumerRecord<String, DynamicMessage> cr, Acknowledgment ack) {
 
         try {

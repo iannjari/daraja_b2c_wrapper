@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class B2CResultPublisher {
 
-    @Value("${producer..topic.b2c_result}")
+    @Value("${kafka.producer.topic.b2c_result}")
     private String topicName;
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
