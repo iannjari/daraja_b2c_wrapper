@@ -1,4 +1,4 @@
-package dev.njari.daraja.api.b2c.http_client;
+package dev.njari.daraja.api.b2c.daraja;
 
 import lombok.Data;
 import lombok.Getter;
@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
 public class DarajaSettings {
     private String url;
     private String responseType;
-    private TransactionTypes transactionTypes;
     private ResultCodes resultCodes;
     private Api api;
     private B2CConfig b2CConfig;
@@ -42,33 +41,15 @@ public class DarajaSettings {
     public static class KyoskRetailers {
         private String shortCode;
         private String tillNumber;
-        private String tillTillShortcode;
         private String key;
         private String secret;
         private String passkey;
     }
 
-    @Getter
-    @Setter
+    @Data
     public static class Api {
-        private Stk stk;
         private Urls urls;
         private B2C b2c;
-    }
-
-    @Getter
-    @Setter
-    public static class Credentials {
-        private String key;
-        private String secret;
-        private String passkey;
-    }
-
-    @Getter
-    @Setter
-    public static class TransactionTypes {
-        private String paybill;
-        private String buygoods;
     }
 
     @Getter
@@ -78,14 +59,6 @@ public class DarajaSettings {
         private int userCancelled;
     }
 
-    @Getter
-    @Setter
-    public static class Stk {
-        private String processRequest;
-        private String queryTransaction;
-        private String callbackStk;
-    }
-
     @Data
     public static class B2C {
         private String processPayouts;
@@ -93,12 +66,8 @@ public class DarajaSettings {
         private String resultUrl;
     }
 
-    @Getter
-    @Setter
+    @Data
     public static class Urls {
         private String authenticationUrl;
-        private String pullTransactionsRegisterUrl;
-        private String pullTransactions;
-        private String transactionHistoryUrl;
     }
 }
