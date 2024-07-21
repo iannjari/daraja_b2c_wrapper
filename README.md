@@ -16,6 +16,7 @@ Env Variables
 - INITIATOR_NAME - from the B2C API on the Daraja portal
 - SECURITY_CREDENTIALS - from the Certificate and the Initiator password
 - B2C_MPESA_CONSUMER_SECRET, B2C_MPESA_CONSUMER_KEY - the credentials of the app on Daraja
+
 Steps:
 1. From the project root, cd into the docker folder 
     `cd docker`
