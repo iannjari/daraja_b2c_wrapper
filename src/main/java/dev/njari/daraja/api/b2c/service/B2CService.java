@@ -145,22 +145,22 @@ public class B2CService {
 
     public B2CRequest createB2CRequest(GwRequest gwRequest, B2CTransaction tr) {
 
-        String b2cPassword = darajaSettings.getB2CConfig().getSecurityCredential();
+        String b2cPassword = darajaSettings.getSecurityCredential();
 
         B2CRequest request = new B2CRequest();
 
         request.setOriginatorConversationID(tr.getId().toString());
-        request.setInitiatorName(darajaSettings.getB2CConfig().getInitiatorName());
+        request.setInitiatorName(darajaSettings.getInitiatorName());
         request.setSecurityCredential(
                 DarajaHttpClient.generateSecurityCredentials(b2cPassword, certPath, resourceLoader));
-        request.setPartyA(darajaSettings.getB2CConfig().getShortcode());
+        request.setPartyA(darajaSettings.getShortcode());
         request.setPartyB(gwRequest.getMobileNumber().replace("+", ""));
         request.setAmount(String.valueOf(tr.getAmount()));
         request.setRemarks("");
         request.setOccassion("PAYOUT");
-        request.setCommandID(darajaSettings.getB2CConfig().getCommandId());
-        request.setQueueTimeOutURL(darajaSettings.getApi().getB2c().getQueueTimeoutUrl());
-        request.setResultURL(darajaSettings.getApi().getB2c().getResultUrl());
+        request.setCommandID(darajaSettings.getCommandId());
+        request.setQueueTimeOutURL(darajaSettings.getQueueTimeoutUrl());
+        request.setResultURL(darajaSettings.getResultUrl());
         return request;
     }
 }

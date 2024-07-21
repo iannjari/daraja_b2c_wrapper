@@ -25,8 +25,8 @@ public class AccessTokenScheduler {
     @Scheduled(fixedRate = (1000 * 60) * 60)
     public void fetchAccessToken() throws InterruptedException {
         try {
-            accessToken = DarajaHttpClient.getB2cSafAccessToken(darajaSettings.getB2CConfig().getKey(),
-                    darajaSettings.getB2CConfig().getSecret(), darajaSettings.getApi().getUrls().getAuthenticationUrl());
+            accessToken = DarajaHttpClient.getB2cSafAccessToken(darajaSettings.getKey(),
+                    darajaSettings.getSecret(), darajaSettings.getAuthenticationUrl());
         } catch (IOException e) {
             e.printStackTrace();
             log.info("Error when fetching access token: {}", e.getLocalizedMessage());

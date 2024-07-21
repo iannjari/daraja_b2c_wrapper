@@ -51,8 +51,8 @@ public class PayoutService {
     }
 
     private <T> Call makeB2cRequest(T requestObj, String requestURL) throws IOException {
-        String token = "Bearer " + DarajaHttpClient.getB2cSafAccessToken(darajaSettings.getB2CConfig().getKey(),
-                darajaSettings.getB2CConfig().getSecret(), darajaSettings.getApi().getUrls().getAuthenticationUrl());
+        String token = "Bearer " + DarajaHttpClient.getB2cSafAccessToken(darajaSettings.getKey(),
+                darajaSettings.getSecret(), darajaSettings.getAuthenticationUrl());
 
         String requestString = mapper.writeValueAsString(requestObj);
         log.info("Request string: {}", requestString);
