@@ -13,7 +13,12 @@ import java.util.UUID;
 
 @Data
 public class B2CResultDTO {
+
     private UUID id;
+
     private B2CTransactionStatus status;
-    private String reference;
+
+    private String ref;
+
+    private String remarks;
 }

@@ -37,9 +37,18 @@ public class B2CTransaction {
     @Column(name = "transaction_ref")
     private String transactionReference;
 
+    @Column(name = "remarks")
+    private String remarks;
+
     // whether this transaction is in a non-retriable failed/successful state
     @Column(name = "terminal")
     private boolean terminal;
+
+    @Column(name = "last_publish_failed")
+    private boolean lastPublishingFailed;
+
+    @Column(name = "request_id", nullable = false)
+    private UUID requestId;
 
     @Column(nullable = false, name = "created_at")
     @CreatedDate
